@@ -1,6 +1,6 @@
 <?php
 $host = "sql97.lh.pl";  // Adres serwera bazy danych
-$dbname = "biuro_podrozy";  // Nazwa bazy danych
+$dbname = "'serwer194309_crm";  // Nazwa bazy danych
 $username = "serwer194309_crm";  // Użytkownik bazy danych
 $password = "Polska09!";  // Hasło do bazy danych
 
