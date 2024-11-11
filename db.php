@@ -1,8 +1,8 @@
 <?php
-$host = "localhost";  // Adres serwera bazy danych
+$host = "sql97.lh.pl";  // Adres serwera bazy danych
 $dbname = "biuro_podrozy";  // Nazwa bazy danych
-$username = "root";  // Użytkownik bazy danych
-$password = "";  // Hasło do bazy danych
+$username = "serwer194309_crm";  // Użytkownik bazy danych
+$password = "Polska09!";  // Hasło do bazy danych
 
 try {
     // Tworzymy połączenie z bazą danych
