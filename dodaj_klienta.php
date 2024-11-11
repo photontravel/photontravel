@@ -2,10 +2,10 @@
 header('Content-Type: application/json');
 
 // Konfiguracja połączenia z bazą danych
-$host = "localhost";
+$host = "sql97.lh.pl";
 $dbname = "biuro_podrozy";
-$username = "root";
-$password = "";
+$username = "serwer194309_crm";
+$password = "Polska09!";
 
 // Połączenie z bazą danych
 try {
