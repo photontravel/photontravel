@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Biura Podróży - Panel Pracownika</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f8ff;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #007acc;
+            text-align: center;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .option {
+            background-color: #e6f3ff;
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .option:hover {
+            background-color: #cce6ff;
+        }
+        .option h2 {
+            color: #007acc;
+            margin-bottom: 10px;
+        }
+        .option p {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Panel Pracownika - CRM Biura Podróży</h1>
+    <div class="options">
+        <div class="option" onclick="location.href='klienci.html'">
+            <h2>Zarządzanie Klientami</h2>
+            <p>Przeglądaj i edytuj dane klientów, dodawaj nowe kontakty.</p>
+        </div>
+        <div class="option" onclick="location.href='/oferty'">
+            <h2>Oferty i Rezerwacje</h2>
+            <p>Twórz i zarządzaj ofertami podróży oraz rezerwacjami klientów.</p>
+        </div>
+        <div class="option" onclick="location.href='/kalendarz'">
+            <h2>Kalendarz Wyjazdów</h2>
+            <p>Śledź terminy wyjazdów i organizuj harmonogramy podróży.</p>
+        </div>
+        <div class="option" onclick="location.href='/raporty'">
+            <h2>Raporty i Statystyki</h2>
+            <p>Analizuj dane sprzedaży i wydajność zespołu.</p>
+        </div>
+        <div class="option" onclick="location.href='/wiadomości'">
+            <h2>Wiadomości i Powiadomienia</h2>
+            <p>Wysyłaj wiadomości do klientów i zarządzaj powiadomieniami.</p>
+        </div>
+        <div class="option" onclick="location.href='/ustawienia'">
+            <h2>Ustawienia Konta</h2>
+            <p>Zarządzaj ustawieniami konta i preferencjami użytkownika.</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

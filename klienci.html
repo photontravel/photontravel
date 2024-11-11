@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Biura Podróży - Klienci</title>
+    <style>
+        /* Resetowanie domyślnych styli */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #client-details {
+    margin-top: 30px;
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 8px;
+    display: none;
+    max-height: 300px; /* Określa maksymalną wysokość */
+    overflow-y: auto;  /* Dodaje przewijanie, gdy zawartość przekracza wysokość */
+}
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(145deg, #6a82fb, #fc5c7d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: #fff;
+            width: 45%;
+            margin: 20px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-top: 10px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus, input[type="number"]:focus {
+            border-color: #6a82fb;
+            outline: none;
+        }
+
+        button {
+            padding: 15px;
+            background-color: #fc5c7d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ff6b81;
+        }
+
+        button:disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+
+        .home-button {
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: #218838;
+        }
+
+        #result {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+            display: none;
+        }
+
+        #result.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        #result.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        #client-details {
+            margin-top: 30px;
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .client-info {
+            margin-bottom: 15px;
+        }
+
+        .client-info strong {
+            color: #fc5c7d;
+        }
+
+        /* Responsywność */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                width: 80%;
+                margin: 20px 0;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            button {
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            .home-button {
+                padding: 12px;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Nowy podział formularza na dwie kolumny */
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            width: 48%;
+        }
+
+    </style>
+    <script>
+        // Funkcja do dodania klienta
+        function dodajKlienta(event) {
+            event.preventDefault();  // Zapobiega przeładowaniu strony
+
+            // Pobranie danych z formularza
+            const formData = new FormData(document.querySelector("form"));
+            
+            // Wysłanie danych za pomocą fetch
+            fetch("dodaj_klienta.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultElement = document.getElementById("result");
+                if (data.success) {
+                    resultElement.innerText = `Klient dodany pomyślnie! ID: ${data.klient_id}`;
+                    resultElement.className = "success";
+                } else {
+                    resultElement.innerText = "Błąd podczas dodawania klienta.";
+                    resultElement.className = "error";
+                }
+                resultElement.style.display = "block";
+                resultElement.style.opacity = 1;  // Włączenie animacji pojawiania się
+            })
+            .catch(error => {
+                const resultElement = document.getElementById("result");
+                resultElement.innerText = "Wystąpił błąd: " + error.message;
+                resultElement.className = "error";
+                resultElement.style.display = "block";
+                resultElement.style.opacity = 1;
+            });
+        }
+
+                function pokazKlientaPoID(event) {
+            event.preventDefault();  // Zapobiega przeładowaniu strony
+
+            const klientId = document.getElementById("klient_id").value;
+            if (!klientId) {
+                alert("Proszę wprowadzić ID klienta.");
+                return;
+            }
+
+            // Wysłanie zapytania AJAX do pobrania danych klienta
+            fetch(`pobierz_klienta.php?id=${klientId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Wyświetlenie danych klienta
+                        document.getElementById("client-details").innerHTML = `
+                            <h2>Szczegóły klienta</h2>
+                            <p><strong>Imię:</strong> ${data.imie}</p>
+                            <p><strong>Nazwisko:</strong> ${data.nazwisko}</p>
+                            <p><strong>Telefon:</strong> ${data.telefon}</p>
+                            <p><strong>Email:</strong> ${data.email}</p>
+                            <p><strong>Adres:</strong> ${data.adres}</p>
+                            <p><strong>Kod Pocztowy:</strong> ${data.kod_pocztowy}</p>
+                            <p><strong>Miasto:</strong> ${data.miasto}</p>
+                        `;
+
+                        // Wyświetlenie zdarzeń
+                        if (data.zdarzenia.length > 0) {
+                            let zdarzeniaHTML = '<h3>Zdarzenia:</h3><ul>';
+                            data.zdarzenia.forEach(zdarzenie => {
+                                zdarzeniaHTML += `
+                                    <li>
+                                        <strong>Typ:</strong> ${zdarzenie.typ_zdarzenia} <br>
+                                        <strong>Opis:</strong> ${zdarzenie.opis_zdarzenia} <br>
+                                        <strong>Data:</strong> ${zdarzenie.data_zdarzenia}
+                                    </li>
+                                `;
+                            });
+                            zdarzeniaHTML += '</ul>';
+                            document.getElementById("client-details").innerHTML += zdarzeniaHTML;
+                        } else {
+                            document.getElementById("client-details").innerHTML += "<p>Brak zdarzeń dla tego klienta.</p>";
+                        }
+
+                        document.getElementById("client-details").style.display = "block";
+                    } else {
+                        document.getElementById("client-details").innerHTML = "Nie znaleziono klienta o podanym ID.";
+                        document.getElementById("client-details").style.display = "block";
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("client-details").innerHTML = "Wystąpił błąd: " + error.message;
+                    document.getElementById("client-details").style.display = "block";
+                });
+        }
+    </script>
+
+</head>
+<body>
+
+<h1>CRM Biura Podróży - Klienci</h1>
+
+<div class="container">
+
+    <!-- Dodawanie klienta -->
+    <div class="card">
+        <h2>Dodaj Nowego Klienta</h2>
+        <form onsubmit="dodajKlienta(event)">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="imie">Imię:</label>
+                    <input type="text" id="imie" name="imie" required>
+                </div>
+                <div class="form-group">
+                    <label for="nazwisko">Nazwisko:</label>
+                    <input type="text" id="nazwisko" name="nazwisko" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="telefon">Telefon:</label>
+                    <input type="tel" id="telefon" name="telefon" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="adres">Adres:</label>
+                    <input type="text" id="adres" name="adres" required>
+                </div>
+                <div class="form-group">
+                    <label for="kod_pocztowy">Kod Pocztowy:</label>
+                    <input type="text" id="kod_pocztowy" name="kod_pocztowy" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="miasto">Miasto:</label>
+                    <input type="text" id="miasto" name="miasto" required>
+                </div>
+            </div>
+
+            <button type="submit">Dodaj Klienta</button>
+        </form>
+
+        <!-- Wynik -->
+        <div id="result"></div>
+    </div>
+
+    <!-- Wyszukiwanie klienta po ID -->
+    <div class="card">
+        <h2>Wyszukaj Klienta po ID</h2>
+        <form onsubmit="pokazKlientaPoID(event)">
+            <div class="form-group">
+                <label for="klient_id">ID Klienta:</label>
+                <input type="text" id="klient_id" required>
+            </div>
+            <button type="submit">Pokaż Klienta</button>
+        </form>
+
+        <!-- Szczegóły klienta -->
+        <div id="client-details"></div>
+        <div id="client-events"></div> <!-- Lista zdarzeń klienta -->
+    </div>
+
+</div>
+
+<button class="home-button" onclick="window.location.href='index.html'">Strona Główna</button>
+
+</body>
+</html>
