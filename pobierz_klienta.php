@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 
 // Konfiguracja połączenia z bazą danych
 $host = "sql97.lh.pl";
-$dbname = "biuro_podrozy";
+$dbname = "'serwer194309_crm";
 $username = "serwer194309_crm";
 $password = "Polska09!";
 
